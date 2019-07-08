@@ -199,7 +199,85 @@ Note: the brackets [] surrounding the blanks __ are part of the test case.
 (fn [x y] (.get x y))
 ```
 
+22. Clojure lets you give local names to values using the special let-form.
+```clojure
+(= __ (let [x 5] (+ 2 x)))
+(= __ (let [x 3, y 10] (- y x)))
+(= __ (let [x 21] (let [y 3] (/ x y))))
+```
+```clojure
+7
+```
 
+23. Can you bind x, y, and z so that these are all true?
+```clojure
+(= 10 (let __ (+ x y)))
+(= 4 (let __ (+ y z)))
+(= 1 (let __ z))
+```
+```clojure
+[x 7 y 3 z 1]
+```
+
+24. Regex patterns are supported with a special reader macro.
+```clojure
+(= __ (apply str (re-seq #"[A-Z]+" "bA1B3Ce ")))
+```
+```clojure
+"ABC"
+```
+
+25. Reduce takes a 2 argument function and an optional starting value. It then applies the function to the first 2 items in the sequence (or the starting value and the first element of the sequence). In the next iteration the function will be called on the previous return value and the next item from the sequence, thus reducing the entire collection to one value. Don't worry, it's not as complicated as it sounds.
+```clojure
+(= 15 (reduce __ [1 2 3 4 5]))
+(=  0 (reduce __ []))
+(=  6 (reduce __ 1 [2 3]))
+```
+```clojure
++
+```
+
+26. A recursive function is a function which calls itself. This is one of the fundamental techniques used in functional programming.
+```clojure
+(= __ ((fn foo [x] (when (> x 0) (conj (foo (dec x)) x))) 5))
+```
+```clojure
+[5 4 3 2 1]
+```
+
+27. Clojure only has one non-stack-consuming looping construct: recur. Either a function or a loop can be used as the recursion point. Either way, recur rebinds the bindings of the recursion point to the values it is passed. Recur must be called from the tail-position, and calling it elsewhere will result in an error.
+```clojure
+(= __
+  (loop [x 5
+         result []]
+    (if (> x 0)
+      (recur (dec x) (conj result (+ 2 x)))
+      result)))
+```
+```clojure
+[7 6 5 4 3]
+```
+
+28. Let bindings and function parameter lists support destructuring.
+```clojure
+(= [2 4] (let [[a b c d e] [0 1 2 3 4]] __))
+```
+```clojure
+[c e]
+```
+
+29. Set A is a subset of set B, or equivalently B is a superset of A, if A is "contained" inside B. A and B may coincide.
+```clojure
+(clojure.set/superset? __ #{2})
+(clojure.set/subset? #{1} __)
+(clojure.set/superset? __ #{1 2})
+(clojure.set/subset? #{1 2} __)
+```
+```clojure
+#{1 2}
+```
+
+30. 
 
 
 
