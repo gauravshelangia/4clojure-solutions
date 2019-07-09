@@ -277,7 +277,79 @@ Note: the brackets [] surrounding the blanks __ are part of the test case.
 #{1 2}
 ```
 
-30. 
+30. The -> macro threads an expression x through a variable number of forms. First, x is inserted as the second item in the first form, making a list of it if it is not a list already. Then the first form is inserted as the second item in the second form, making a list of that form if necessary. This process continues for all the forms. Using -> can sometimes make your code more readable.
+```clojure
+(= (__ (sort (rest (reverse [2 5 4 1 3 6]))))
+   (-> [2 5 4 1 3 6] (reverse) (rest) (sort) (__))
+   5)
+```
+```clojure
+last
+```
+
+31. The ->> macro threads an expression x through a variable number of forms. First, x is inserted as the last item in the first form, making a list of it if it is not a list already. Then the first form is inserted as the last item in the second form, making a list of that form if necessary. This process continues for all the forms. Using ->> can sometimes make your code more readable.
+```clojure
+(take 3 (drop 2 [2 5 4 1 3 6]))
+(= (__ (map inc (take 3 (drop 2 [2 5 4 1 3 6]))))
+   (->> [2 5 4 1 3 6] (drop 2) (take 3) (map inc) (__))
+   11)
+```
+```clojure
+reduce +
+```
+
+32. Clojure's for macro is a tremendously versatile mechanism for producing a sequence based on some other sequence(s). It can take some time to understand how to use it properly, but that investment will be paid back with clear, concise sequence-wrangling later. With that in mind, read over these for expressions and try to see how each of them produces the same result.
+```clojure	
+(= __ (for [x (range 40)
+            :when (= 1 (rem x 4))]
+        x))
+test not run	
+(for [x (iterate #(+ 4 %) 0)
+            :let [z (inc x)]
+            :while (< z 40)]
+        z)
+(= __ (for [x (iterate #(+ 4 %) 0)
+            :let [z (inc x)]
+            :while (< z 40)]
+        z))
+test not run	
+(for [[x y] (partition 2 (range 20))]
+        (+ x y))
+(= __ (for [[x y] (partition 2 (range 20))]
+        (+ x y)))
+```
+```clojure
+'(1 5 9 13 17 21 25 29 33 37)
+```
+
+33. In Clojure, only nil and false represent the values of logical falsity in conditional tests - anything else is logical truth.
+```clojure
+(= __ (if-not false 1 0))
+(= __ (if-not nil 1 0))
+(= __ (if true 1 0))
+(= __ (if [] 1 0))
+(= __ (if [0] 1 0))
+(= __ (if 0 1 0))
+(= __ (if 1 1 0))
+```
+```clojure
+1
+```
+
+34. When retrieving values from a map, you can specify default values in case the key is not found:
+
+(= 2 (:foo {:bar 0, :baz 1} 2))
+
+However, what if you want the map itself to contain the default values? Write a function which takes a default value and a sequence of keys and constructs a map.
+```clojure
+(= (__ 0 [:a :b :c]) {:a 0 :b 0 :c 0})
+(= (__ "x" [1 2 3]) {1 "x" 2 "x" 3 "x"})
+(= (__ [:a :b] [:foo :bar]) {:foo [:a :b] :bar [:a :b]})
+(= (__ [:a :b] [:foo :bar]) {:foo [:a :b] :bar [:a :b]})
+```
+```clojure
+(fn [default_value vect] (reduce #(assoc %1 %2 default_value) {} vect))
+```
 
 
 
