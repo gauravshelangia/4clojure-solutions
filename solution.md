@@ -351,11 +351,41 @@ However, what if you want the map itself to contain the default values? Write a 
 (fn [default_value vect] (reduce #(assoc %1 %2 default_value) {} vect))
 ```
 
+35. Write a function which returns the total number of elements in a sequence.
+```clojure
+(= (__ '(1 2 3 3 1)) 5)
+(= (__ "Hello World") 11)
+(= (__ [[1 2] [3 4] [5 6]]) 3)
+(= (__ '(13)) 1)
+(= (__ '(:a :b :c)) 3)
+```
 
+```clojure
+reduce (fn[n _] (inc n)) 0
+```
 
+36. Write a function which returns the sum of a sequence of numbers.
+```clojure
+(= (__ [1 2 3]) 6)
+(= (__ (list 0 -2 5 5)) 8)
+(= (__ #{4 2 1}) 7)
+(= (__ '(0 0 -1)) -1)
+(= (__ '(1 10 3)) 14)
+```
+```clojure
+reduce + 0 
+```
 
-
-
+37. Write a function which returns only the odd numbers from a sequence.
+```clojure
+(= (__ #{1 2 3 4 5}) '(1 3 5))
+(= (__ [4 2 1 6]) '(1))
+(= (__ [2 2 4 6]) '())
+(= (__ [1 1 1 3]) '(1 1 1 3))
+```
+```clojure
+filter odd?
+```
 
 
 
