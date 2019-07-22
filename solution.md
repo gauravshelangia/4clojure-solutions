@@ -387,6 +387,29 @@ reduce + 0
 filter odd?
 ```
 
+38. Write a function which reverses a sequence.
+```clojure
+(= (__ [1 2 3 4 5]) [5 4 3 2 1])
+(= (__ (sorted-set 5 7 2 7)) '(7 5 2))
+(= (__ [[1 2][3 4][5 6]]) [[5 6][3 4][1 2]])
+```
+```clojure
+reduce (fn[coll n ] (conj coll n) ) ()
+```
+
+39. Write a function which returns true if the given sequence is a palindrome.
+Hint: "racecar" does not equal '(\r \a \c \e \c \a \r)
+```clojure
+(false? (__ '(1 2 3 4 5)))
+(true? (__ "racecar"))
+(true? (__ [:foo :bar :foo]))
+(true? (__ '(1 1 3 3 1 1)))
+(false? (__ '(:a :b :c)))
+```
+```clojure
+(fn [coll] (= (seq coll) (reverse coll)))
+(fn[collection] ( = (seq ( reduce (fn[coll n ] (conj coll n) ) () collection)) (seq collection) )) ; using reduce, not a good solution
+```
 
 
 
