@@ -32,7 +32,8 @@ Note: Enter only enough to fill in the blank (in this case, a single number) - d
 ```
 
 5. When operating on a list, the conj function will return a new list with one or more items "added" to the front.
-Note that there are two test cases, but you are expected to supply only one answer, which will cause all the tests to pass.
+Note that there are two 
+cases, but you are expected to supply only one answer, which will cause all the tests to pass.
 ```clojure
 (= __ (conj '(2 3 4) 1))
 (= __ (conj '(3 4) 2 1))
@@ -303,7 +304,7 @@ reduce +
 (= __ (for [x (range 40)
             :when (= 1 (rem x 4))]
         x))
-test not run	
+        
 (for [x (iterate #(+ 4 %) 0)
             :let [z (inc x)]
             :while (< z 40)]
@@ -312,7 +313,7 @@ test not run
             :let [z (inc x)]
             :while (< z 40)]
         z))
-test not run	
+
 (for [[x y] (partition 2 (range 20))]
         (+ x y))
 (= __ (for [[x y] (partition 2 (range 20))]
@@ -421,10 +422,61 @@ Hint: "racecar" does not equal '(\r \a \c \e \c \a \r)
 6
 ```
 
+41. Write a function which takes a variable number of parameters and returns the maximum value.
+```clojure
+(= (__ 1 8 3 4) 8)
+(= (__ 30 20) 30)
+(= (__ 45 67 11) 67)
+```
+```clojure
+(fn max-of-args [& args] (reduce #(if (< %1 %2) %2 %1) (flatten args)))
+```
 
+42. Write a function which duplicates each element of a sequence.
+```clojure
+(= (__ [1 2 3]) '(1 1 2 2 3 3))
+(= (__ [:a :a :b :b]) '(:a :a :a :a :b :b :b :b))
+(= (__ [[1 2] [3 4]]) '([1 2] [1 2] [3 4] [3 4]))
+(= (__ [[1 2] [3 4]]) '([1 2] [1 2] [3 4] [3 4]))
+```
+```clojure
+(fn[collection] ( reverse ( reduce (fn[coll n ] (conj coll n n) ) () collection)  ))
+```
 
+43. Write a function which replicates each element of a sequence a variable number of times.
+```clojure
+(= (__ [1 2 3] 2) '(1 1 2 2 3 3))
+(= (__ [:a :b] 4) '(:a :a :a :a :b :b :b :b))
+(= (__ [4 5 6] 1) '(4 5 6))
+(= (__ [[1 2] [3 4]] 2) '([1 2] [1 2] [3 4] [3 4]))
+(= (__ [44 33] 2) [44 44 33 33])
+```
+```clojure
+(fn[collection times] ( reverse ( reduce (fn[coll n ] (into coll (repeat times n) )  ) () collection)  ))
+```
 
+44. Write a function which creates a list of all integers in a given range.
+```clojure
+(= (__ 1 4) '(1 2 3))
+(= (__ -2 2) '(-2 -1 0 1))
+(= (__ 5 8) '(5 6 7))
+```
+```clojure
+(fn [from to] (reverse (loop [coll () cnt from] (if (= cnt to) coll  (recur (conj  coll cnt) (inc cnt))))) )
+```
 
+45. Write a function which takes two sequences and returns the first item from each, then the second item from each, then the third, etc.
+```clojure
+(= (__ [1 2 3] [:a :b :c]) '(1 :a 2 :b 3 :c))
+(= (__ [1 2] [3 4 5 6]) '(1 3 2 4))
+(= (__ [1 2 3 4] [5]) [1 5])
+(= (__ [30 20] [25 15]) [30 25 20 15])
+```
+```clojure
+(fn [seq1 seq2 ] (#(flatten (map list seq1 seq2)) ))
+
+#(flatten (map list %1 %2))
+```
 
 
 
