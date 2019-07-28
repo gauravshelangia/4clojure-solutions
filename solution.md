@@ -536,7 +536,16 @@ Hint: "racecar" does not equal '(\r \a \c \e \c \a \r)
 #(apply distinct? (apply concat %)) 
 ```
 
-
+47. Write a function which takes a string and returns a new string containing only the capital letters.
+```clojure
+(= (__ "HeLlO, WoRlD!") "HLOWRD")
+(empty? (__ "nothing"))
+(= (__ "$#A(*&987Zf") "AZ")
+```
+```clojure
+(fn [x] (apply str (re-seq #"[A-Z]" x)))
+#(apply str (re-seq #"[A-Z]" %))
+```
 
 
 
