@@ -547,6 +547,35 @@ Hint: "racecar" does not equal '(\r \a \c \e \c \a \r)
 #(apply str (re-seq #"[A-Z]" %))
 ```
 
+48. Write a function which removes consecutive duplicates from a sequence.
+```clojure
+(= (apply str (__ "Leeeeeerrroyyy")) "Leroy")
+(= (__ [1 1 2 3 3 2 2 3]) '(1 2 3 2 3))
+(= (__ [[1 2] [1 2] [3 4] [1 2]]) '([1 2] [3 4] [1 2]))
+```
+```
+(fn[coll in] (reduce (fn[coll input] (if (not= (last coll) input) (conj coll input) coll) ) coll in )) []
+```
+
+49. Write a function which packs consecutive duplicates into sub-lists.
+```clojure
+(= (__ [1 1 2 1 1 1 3 3]) '((1 1) (2) (1 1 1) (3 3)))
+(= (__ [:a :a :b :b :c]) '((:a :a) (:b :b) (:c)))
+(= (__ [[1 2] [1 2] [3 4]]) '(([1 2] [1 2]) ([3 4])))
+```
+```
+partition-by identity
+```
+
+50. Write a function which separates the items of a sequence by an arbitrary value.
+```clojure
+(= (__ 0 [1 2 3]) [1 0 2 0 3])
+(= (apply str (__ ", " ["one" "two" "three"])) "one, two, three")
+(= (__ :z [:a :b :c :d]) [:a :z :b :z :c :z :d])
+```
+```
+(fn[sep sequ] (->> (reduce #(conj %1 sep %2) [] sequ) (drop 1)) )
+```
 
 
 
