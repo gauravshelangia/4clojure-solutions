@@ -607,11 +607,104 @@ iterate #(+ 3 %) 1)))
 '(1 4 7 10 13)
 ```
 
-53. 
+53. Write a function which flattens a sequence.
+```clojure
+(= (__ '((1 2) 3 [4 [5 6]])) '(1 2 3 4 5 6))
+(= (__ ["a" ["b"] "c"]) '("a" "b" "c"))
+(= (__ '((((:a))))) '(:a))
+```
+```clojure
+(fn flat-seq [sequ]
+  (if (coll? sequ)
+    (mapcat flat-seq sequ)
+    [sequ]))
+```
 
+54. Write a function which drops every Nth item from a sequence.
+```clojure
+(= (__ [1 2 3 4 5 6 7 8] 3) [1 2 4 5 7 8])
+(= (__ [:a :b :c :d :e :f] 2) [:a :c :e])
+(= (__ [1 2 3 4 5 6] 4) [1 2 3 5 6])
+```
+```clojure
+(fn drop-every-nth [result coll n] (
+                     if(not (empty? coll))
+                     	(do 
+                          (concat result (take (dec n) coll)
+                          (drop-every-nth result (drop n coll) n)        
+                                  ))
+                     	result
+ 						
+              
+              )
+  ) '()
+```
 
+55. The contains? function checks if a KEY is present in a given collection. This often leads beginner clojurians to use it incorrectly with numerically indexed collections like vectors and lists.
+```clojure
+(contains? #{4 5 6} __)
+(contains? [1 1 1 1 1]
+(contains? [1 1 1 1 1] __)
+(contains? {4 :a 2 :b} __)
+(not (contains? [1 2 4] __))
+```
+```clojure
+4
+```
 
+56. Write a function which will split a sequence into two parts.
+```clojure
+(= (__ 3 [1 2 3 4 5 6]) [[1 2 3] [4 5 6]])
+(= (__ 1 [:a :b :c :d]) [[:a] [:b :c :d]])
+(= (__ 2 [[1 2] [3 4] [5 6]]) [[[1 2] [3 4]] [[5 6]]])
+```
+```clojure
+#(reverse (conj '() (take %1 %2) (drop %1 %2)))
+```
 
+57. Here is an example of some more sophisticated destructuring.
+```clojure
+(= [1 2 [3 4 5] [1 2 3 4 5]] (let [[a b & c :as d] __] [a b c d]))
+```
+```clojure
+[1 2 3 4 5]
+```
+
+58. Write a function which takes a variable number of booleans. Your function should return true if some of the parameters are true, but not all of the parameters are true. Otherwise your function should return false.
+```clojure
+(= false (__ false false))
+(= true (__ true false))
+(= false (__ true))
+(= true (__ false true false))
+(= false (__ true true true))
+(= true (__ true true true false))
+```
+```clojure
+not=
+```
+
+59. Write a function which takes a vector of keys and a vector of values and constructs a map from them.
+```clojure
+(= (__ [:a :b :c] [1 2 3]) {:a 1, :b 2, :c 3})
+(= (__ [1 2 3 4] ["one" "two" "three"]) {1 "one", 2 "two", 3 "three"})
+(= (__ [:foo :bar] ["foo" "bar" "baz"]) {:foo "foo", :bar "bar"})
+```
+```
+#(into (sorted-map) (map hash-map %1 %2))
+```
+
+60. Given a side-effect free function f and an initial value x write a function which returns an infinite lazy sequence of x, (f x), (f (f x)), (f (f (f x))), etc.
+```clojure
+(= (take 5 (__ #(* 2 %) 1)) [1 2 4 8 16])
+(= (take 100 (__ inc 0)) (take 100 (range)))
+(= (take 9 (__ #(inc (mod % 3)) 1)) (take 9 (cycle [1 2 3])))
+```
+```clojure
+(fn re-iterate[f n](
+                    cons n (lazy-seq (re-iterate f (f n)))
+                    )
+  )
+```
 
 
 
