@@ -577,6 +577,38 @@ partition-by identity
 (fn[sep sequ] (->> (reduce #(conj %1 sep %2) [] sequ) (drop 1)) )
 ```
 
+51. Write a function which calculates factorials.
+```clojure
+(= (__ 1) 1)	
+(= (__ 3) 6)	
+(= (__ 5) 120)
+(= (__ 8) 40320)
+```
+```clojure
+(fn factorial [number] (
+            cond 
+            (= number 1) 1   
+            (> number 1) (* number (factorial (dec number)) )
+            )
+             )
+             
+(fn factorial[number]
+  (if (<= number 1) 1 (* number  (factorial (- number 1))  )))
+
+(fn [n] (reduce * (range 1 (inc n))))
+```
+
+52. The iterate function can be used to produce an infinite lazy sequence.
+```clojure
+iterate #(+ 3 %) 1)))
+(= __ (take 5 (iterate #(+ 3 %) 1)))
+```
+```clojure
+'(1 4 7 10 13)
+```
+
+53. 
+
 
 
 
