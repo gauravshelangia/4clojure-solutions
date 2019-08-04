@@ -707,13 +707,70 @@ not=
   )
 ```
 
+61. Given two integers, write a function which returns the greatest common divisor.
+```clojure
+(__ 2 4)
+(= (__ 2 4) 2)
+(= (__ 10 5) 5)
+(= (__ 5 7) 1)
+(= (__ 1023 858) 33)
+```
+```clojure
+(fn gcd[n1, n2] (
+               if(= n2 0 )
+               n1
+               (gcd n2 (rem n1 n2))
+               ))
+```
 
+62. Write a function which returns the intersection of two sets. The intersection is the sub-set of items that each set has in common.
+```clojure
+#{0 1 2 3}
+(= (__ #{0 1 2 3} #{2 3 4 5}) #{2 3})
+(= (__ #{0 1 2} #{3 4 5}) #{})
+(= (__ #{:a :b :c :d} #{:c :e :a :f :d}) #{:a :c :d})
+```
+```clojure
+(fn[s1 s2] (set (reduce #( if(contains? s1 %2) (conj %1 %2) %1 ) '() s2 )) )
 
+(fn [s1 s2] (into #{} (filter #(s2 %) s1)))
 
+```
 
+63. Write a function which multiplies two numbers and returns the result as a sequence of its digits.
+```clojure
+(= (__ 1 1) [1])
+(= (__ 99 9) [8 9 1])
+(= (__ 999 99) [9 8 9 0 1])
+```
+```clojure
+(fn[n1 n2] (map #(Character/digit % 10) (str (* n1 n2)) ))
+```
 
+64. Given a function f and a sequence s, write a function which returns a map. The keys should be the values of f applied to each item in s. The value at each key should be a vector of corresponding items in the order they appear in s.
+```clojure
+#(> % 5
+(= (__ #(> % 5) [1 3 6 8]) {false [1 3], true [6 8]})
+(= (__ #(apply / %) [[1 2] [2 4] [4 6] [3 6]])
+   {1/2 [[1 2] [2 4] [3 6]], 2/3 [[4 6]]})
+(= (__ count [[1] [1 2] [3] [1 2 3] [2 3]])
+   {1 [[1] [3]], 2 [[1 2] [2 3]], 3 [[1 2 3]]})
+ ```
+ ```clojure
+ (fn g-by[f s] (reduce #(if(contains? %1 (f %2) ) (assoc %1 (f %2) (conj (get %1 (f %2)) %2)) (assoc %1 (f %2) (conj (vector) %2)) ) {} s ))
+ ```
 
-
+65. Create a function that computes the dot product of two sequences. You may assume that the vectors will have the same length.
+```clojure
+(__ [0 1 0] [1 0 0])
+(= 0 (__ [0 1 0] [1 0 0]))
+(= 3 (__ [1 1 1] [1 1 1]))
+(= 32 (__ [1 2 3] [4 5 6]))
+(= 256 (__ [2 5 6] [100 10 1]))
+```
+```clojure
+#(reduce + (map * %1 %2))
+```
 
 
 
