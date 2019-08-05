@@ -772,11 +772,94 @@ not=
 #(reduce + (map * %1 %2))
 ```
 
+66. Map is one of the core elements of a functional programming language. Given a function f and an input sequence s, return a lazy sequence of (f x) for each element x in s.
+```clojure
+(= [3 4 5 6 7]
+   (__ inc [2 3 4 5 6]))
+(= (repeat 10 nil)
+   (__ (fn [_] nil) (range 10)))
+(= [1000000 1000001]
+   (->> (__ inc (range))
+        (drop (dec 1000000))
+        (take 2)))
+```
+```clojure
+;(fn c-map [f s] (reduce #(conj %1 (f %2) ) [] s  ) ) ;; not a good solution
+(fn c-map [f s]
+  (lazy-seq
+    (if (seq s)
+      (cons (f (first s)) (c-map f (rest s)))
+      nil
+      )))
+```
 
+67. Lexical scope and first-class functions are two of the most basic building blocks of a functional language like Clojure. When you combine the two together, you get something very powerful called lexical closures. With these, you can exercise a great deal of control over the lifetime of your local bindings, saving their values for use later, long after the code you're running now has finished.
 
+It can be hard to follow in the abstract, so let's build a simple closure. Given a positive integer n, return a function (f x) which computes xn. Observe that the effect of this is to preserve the value of n for use outside the scope in which it is defined.
 
+```clojure
+(= 256 ((__ 2) 16),
+       ((__ 8) 2))
+(= [1 8 27 64] (map (__ 3) [1 2 3 4]))
+(= [1 2 4 8 16] (map #((__ %) 2) [0 1 2 3 4]))
+```
+```clojure
+(fn f[n] 
+  (fn x-n[x] 
+    (int (Math/pow x n))))
+```
 
+68. For any orderable data type it's possible to derive all of the basic comparison operations (<, ≤, =, ≠, ≥, and >) from a single operation (any operator but = or ≠ will work). Write a function that takes three arguments, a less than operator for the data and two items to compare. The function should return a keyword describing the relationship between the two items. The keywords for the relationship between x and y are as follows:
+x = y → :eq
+x > y → :gt
+x < y → :lt
 
+```clojure
+(= :gt (__ < 5 1))
+(__ (fn [x y] (< (count x) (count y))) "pear" "plum")
+(= :eq (__ (fn [x y] (< (count x) (count y))) "pear" "plum"))
+(= :lt (__ (fn [x y] (< (mod x 5) (mod y 5))) 21 3))
+(= :gt (__ > 0 2))
+```
+```clojure
+(fn cmp[f x y] (cond (f x y) :lt (f y x ) :gt :else :eq))
+
+```
+
+69. Enter a value which satisfies the following:
+```clojure
+(let [x __]
+  (and (= (class x) x) x))
+```
+```clojure
+Class
+```
+
+70. Transform a sequence into a sequence of pairs containing the original elements along with their index.
+```clojure
+[:a :b :c]
+(= (__ [:a :b :c]) [[:a 0] [:b 1] [:c 2]])
+(= (__ [0 1 3]) '((0 0) (1 1) (3 2)))
+(= (__ [[:foo] {:bar :baz}]) [[[:foo] 0] [{:bar :baz} 1]])
+```
+```clojure
+#(map-indexed (fn [index itm] [itm index]) %)
+#(map vector % (range 0 (count %)))
+```
+
+71. Convert a binary number, provided in the form of a string, to its numerical value.
+```clojure
+(= 0     (__ "0"))
+(= 7     (__ "111"))
+(= 8     (__ "1000"))
+(= 9     (__ "1001"))
+(= 255   (__ "11111111"))
+(= 1365  (__ "10101010101"))
+(= 65535 (__ "1111111111111111"))
+```
+```clojure
+#(Integer/parseInt % 2)
+```
 
 
 
