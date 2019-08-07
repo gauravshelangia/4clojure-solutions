@@ -892,6 +892,61 @@ Class
   )
 ```
 
+73. Write a function which takes a collection of integers as an argument. Return the count of how many elements are smaller than the sum of their squared component digits. For example: 10 is larger than 1 squared plus 0 squared; whereas 15 is smaller than 1 squared plus 5 squared.
+```clojure
+(= 8 (__ (range 10)))
+(= 19 (__ (range 30)))
+(= 50 (__ (range 100)))
+(= 50 (__ (range 1000)))
+```
+```clojure
+reduce (fn [count n] (if(> (reduce #(+ (* %2 %2) %1) 0 (map #(Character/digit % 10) (str n)) ) n) (inc count) count )) 0
+```
 
+74. A standard American deck of playing cards has four suits - spades, hearts, diamonds, and clubs - and thirteen cards in each suit. Two is the lowest rank, followed by other integers up to ten; then the jack, queen, king, and ace.
+It's convenient for humans to represent these cards as suit/rank pairs, such as H5 or DQ: the heart five and diamond queen respectively. But these forms are not convenient for programmers, so to write a card game you need some way to parse an input string into meaningful components. For purposes of determining rank, we will define the cards to be valued from 0 (the two) to 12 (the ace)
+Write a function which converts (for example) the string "SJ" into a map of {:suit :spade, :rank 9}. A ten will always be represented with the single character "T", rather than the two characters "10".
+```clojure
+(= {:suit :diamond :rank 10} (__ "DQ"))
+(= {:suit :heart :rank 3} (__ "H5"))
+(= {:suit :club :rank 12} (__ "CA"))
+(= (range 13) (map (comp :rank __ str)
+                   '[S2 S3 S4 S5 S6 S7
+                     S8 S9 ST SJ SQ SK SA]))
+```
+```clojure
+(fn card-mapper[code] (reduce #(if(or (= (str %2) "D" ) (= (str %2) "C") (= (str %2) "S") (= (str %2) "H") )
+(assoc %1 :suit (get {"D" :diamond, "H" :heart, "C" :club, "S" :spade } (str %2) ))
+(assoc %1 :rank (get {"A" 12, "K" 11, "Q" 10, "J" 9, "T" 8, "9" 7, "8" 6, "7" 5, "6" 4, "5" 3, "4" 2,"3" 1, "2" 0 } (str %2) )
+)) {} code))
+```
+
+75. Sequential destructuring allows you to bind symbols to parts of sequential things (vectors, lists, seqs, etc.): (let [bindings* ] exprs*) Complete the bindings so all let-parts evaluate to 3.
+```clojure
+(= 3
+  (let [[__] [+ (range 3)]] (apply __))
+  (let [[[__] b] [[+ 1] 2]] (__ b))
+  (let [[__] [inc 2]] (__)))
+```
+```clojure
+x y
+;; x being + and y being '(0 1 2)
+;; x being + and y being 2
+;; x being inc and y being 2
+```
+
+76. Write a function which calculates the least common multiple. Your function should accept a variable number of positive integers or ratios. 
+```clojure
+(== (__ 2 3) 6)
+(== (__ 5 3 7) 105)
+(== (__ 1/3 2/5) 2)
+(== (__ 3/4 1/6) 3/2)
+(== (__ 7 5/7 2 3/5) 210)
+```
+```clojure
+(fn lcm[n1 & args] (/ (reduce * n1 args) (reduce (fn gcd[a, b] ( if(= b 0 ) a (gcd b (rem a b)) )) n1 args ) ) )
+```
+
+77. 
 
 
