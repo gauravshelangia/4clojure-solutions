@@ -970,3 +970,18 @@ x y
 ```clojure
 (fn [s1 s2] (clojure.set/difference (clojure.set/union s1 s2) (clojure.set/intersection s1 s2)) )
 ```
+
+79. Write a function which calculates the Cartesian product of two sets.
+```clojure
+(= (__ #{"ace" "king" "queen"} #{"♠" "♥" "♦" "♣"})
+   #{["ace"   "♠"] ["ace"   "♥"] ["ace"   "♦"] ["ace"   "♣"]
+     ["king"  "♠"] ["king"  "♥"] ["king"  "♦"] ["king"  "♣"]
+     ["queen" "♠"] ["queen" "♥"] ["queen" "♦"] ["queen" "♣"]})\
+(= (__ #{1 2 3} #{4 5})
+   #{[1 4] [2 4] [3 4] [1 5] [2 5] [3 5]})
+(= 300 (count (__ (into #{} (range 10))
+                  (into #{} (range 30)))))
+```
+```clojure
+(fn cart-prod[result s1 s2] (set (reverse (for [x s1  y s2] (conj result x y)) ) )) []
+```
